@@ -6,6 +6,6 @@ __queuestorage__
 local.settings.json
 test
 .venv
-.vscode
 tests
 README.md
+__pycache__
