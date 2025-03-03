@@ -27,7 +27,7 @@ class Vehicle(BaseModel):
     Exterior_Image_URLs: Optional[str] = None
     Interior_Image_URLs: Optional[str] = None
     Damaged_Image_URLs: Optional[str] = None
-    Exterior_Color: Optional[str] = None
+    Exterior_colour: Optional[str] = None
     Source: Optional[str] = None
     Seller_Name: Optional[str] = None
     Seller_Email: Optional[str] = None
@@ -48,6 +48,7 @@ class Vehicle(BaseModel):
     Misc_Fees: Optional[str] = None
     Transport_Cost : Optional[str] = None
     Taxes : Optional[str] = None
+    Image_Link : Optional[str] = None
 
 
 class ActivationVehicle(BaseModel):

@@ -36,13 +36,9 @@ async def add_vehicle(body):
 
             # Create Vehicle instance from form data
             vehicle = Vehicle(
-                Carfax_URL=body.get('Carfax_URL', ''),
                 Vehicle_Image_Url=body.get('Vehicle_Image_Url', ''),
                 Mileage=body.get('Mileage',''),
-                Number_of_Cylinders=body.get('Number_of_Cylinders',''),
                 purchase_price=body.get('purchase_price',''),
-                Number_of_Passengers=body.get('Number_of_Passengers',''),
-                Number_of_Doors=body.get('Number_of_Doors',''),
                 Name=body.get('Name',''),
                 Make=body.get('Make',''),
                 Model=body.get('Model',''),
@@ -74,23 +70,23 @@ async def add_vehicle(body):
                 Misc_Fees = body.get('Misc_Fees',''),
                 Transport_Cost = body.get('Transport_Cost',''),
                 Taxes = body.get('Taxes',''),
+                Image_Link= process_main_img(body.get('Vehicle_Image_Url','')),
+                Exterior_colour=body.get('Exterior_Color', ''),
+                Number_of_Cylinders=body.get('Number_of_Cylinders', ''),
+                Number_of_Doors=body.get('Number_of_Doors', ''),
+                Number_of_Passengers=body.get('Number_of_Passengers', '')
+
             )
             # Convert Vehicle instance to a dictionary
             bubble_vehicle = dict(vehicle)
-            # Process the vehicle data further if needed
-            Carfax_url = process_carfax_url(vehicle.Carfax_URL)
-            main_image_url = process_main_img(bubble_vehicle.get('Vehicle_Image_Url', ''))
-
-
-            bubble_vehicle.update({
-            "Carfax_URL": Carfax_url,
-            "Image_Link": main_image_url,
-            "Exterior_colour": bubble_vehicle.get('Exterior_Color', ''),
-        })
+       
+            main_image_url = process_main_img(vehicle.Vehicle_Image_Url)
             vehicle_response = ZOHO_API.create_record(moduleName="Vehicles", data={"data": [bubble_vehicle]}, token=access_token)
             logging.info(f"Vehicle Response : {vehicle_response.json()}")
             vehicle_id = vehicle_response.json()['data'][0]['details']['id']
             def attach_main_image_to_vehicle(access_token, vehicle_id, image_url):
+                temp_image_path = os.path.join(TEMP_DIR, f"{vehicle_id}.jpg")
+                logging.info(f"Temp Image Path : {temp_image_path}")
                 def resize_and_save_image(image_url, vehicle_id, max_width=1024, max_height=1024):
                     response = requests.get(image_url)
                     img = Image.open(io.BytesIO(response.content))
@@ -100,16 +96,17 @@ async def add_vehicle(body):
 
                     # Save as JPEG
                     img = img.convert("RGB")
-                    img.save(f"{vehicle_id}.jpg", "JPEG", quality=85)
+                    
+                    img.save(temp_image_path, "JPEG", quality=85)
 
                 resize_and_save_image(image_url, vehicle_id)  # Resize before uploading
 
                 url = f"https://www.zohoapis.ca/crm/v2/Vehicles/{vehicle_id}/photo"
                 headers = {"Authorization": f"Zoho-oauthtoken {access_token}"}
-                files = {"file": (f"{vehicle_id}.jpg", open(f"{vehicle_id}.jpg", "rb"), "image/jpeg")}
+                files = {"file": (f"{vehicle_id}.jpg", open(temp_image_path, "rb"), "image/jpeg")}
 
                 attach_response = requests.post(url, headers=headers, files=files)
-                os.remove(f"{vehicle_id}.jpg")  # Clean up local file
+                os.remove(temp_image_path)  # Clean up local file
 
                 logging.info(f"Attach Main Image Response : {attach_response.json()}")
                 return attach_response.json()
