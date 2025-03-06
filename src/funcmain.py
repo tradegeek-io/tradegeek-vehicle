@@ -70,7 +70,7 @@ async def add_vehicle(body):
                 Buyer_Fee_f = body.get('Buyer_Fee',''),
                 Misc_Fees = body.get('Misc_Fees',''),
                 Transport_Cost = body.get('Transport_Cost',''),
-                Taxes_F = body.get('Taxes',''),
+                Taxes_F = float(body.get('Taxes','')),
                 Image_Link= process_main_img(body.get('Vehicle_Image_Url','')),
                 Exterior_colour=body.get('Exterior_Color', ''),
                 Number_of_Cylinders=body.get('Number_of_Cylinders', ''),
