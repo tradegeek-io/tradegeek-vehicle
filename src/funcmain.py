@@ -38,7 +38,7 @@ async def add_vehicle(body):
             vehicle = Vehicle(
                 Vehicle_Image_Url=body.get('Vehicle_Image_Url', ''),
                 Mileage=body.get('Mileage',''),
-                purchase_price=body.get('purchase_price',''),
+                Purchase_Price_f=body.get('purchase_price',''),
                 Name=body.get('Name',''),
                 Make=body.get('Make',''),
                 Model=body.get('Model',''),
@@ -66,7 +66,7 @@ async def add_vehicle(body):
                 Status="Pending Review",
                 Where_is_the_Vehicle_Now =body.get('Where_is_the_Vehicle_Now',''),
                 Does_this_Vehicle_Require_Transport = body.get('Does_this_Vehicle_Require_Transport',''),
-                Buyer_Fee = int(float(body.get('Buyer_Fee',''))),
+                Buyer_Fee_f = body.get('Buyer_Fee',''),
                 Misc_Fees = body.get('Misc_Fees',''),
                 Transport_Cost = body.get('Transport_Cost',''),
                 Taxes = body.get('Taxes',''),
