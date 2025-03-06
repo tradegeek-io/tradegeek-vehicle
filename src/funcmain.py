@@ -66,7 +66,7 @@ async def add_vehicle(body):
                 Status="Pending Review",
                 Where_is_the_Vehicle_Now =body.get('Where_is_the_Vehicle_Now',''),
                 Does_this_Vehicle_Require_Transport = body.get('Does_this_Vehicle_Require_Transport',''),
-                Buyer_Fee = int(float(body.get('Buyer_Fee',''))),
+                Buyer_Fee = body.get('Buyer_Fee',''),
                 Misc_Fees = body.get('Misc_Fees',''),
                 Transport_Cost = body.get('Transport_Cost',''),
                 Taxes = body.get('Taxes',''),
