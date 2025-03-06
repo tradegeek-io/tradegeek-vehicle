@@ -47,7 +47,7 @@ class Vehicle(BaseModel):
     Buyer_Fee_f : Optional[float] = None
     Misc_Fees: Optional[str] = None
     Transport_Cost : Optional[str] = None
-    Taxes : Optional[str] = None
+    Taxes_F : Optional[float] = None
     Image_Link : Optional[str] = None
 
 
