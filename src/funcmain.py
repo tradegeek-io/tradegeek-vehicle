@@ -55,7 +55,8 @@ async def add_vehicle(body):
                 Trim=body.get('Trim',''),
                 Options=body.get('Options',''),  # If Options is a list
                 Declarations=body.get('Declarations',''),
-                Source=body.get('Source',''),
+                # Source=body.get('Source',''),
+                Source="Website Input",
                 Seller_ID=body.get('Seller_ID',''),
                 Seller_Name=body.get('SellerName',''),
                 VehicleDescription=body.get('VehicleDescription',''),
