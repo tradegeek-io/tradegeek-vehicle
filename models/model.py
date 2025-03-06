@@ -45,8 +45,8 @@ class Vehicle(BaseModel):
     Where_is_the_Vehicle_Now :Optional[str] = None
     Does_this_Vehicle_Require_Transport : Optional[str] = None
     Buyer_Fee_f : Optional[float] = None
-    Misc_Fees: Optional[str] = None
-    Transport_Cost : Optional[str] = None
+    Misc_Fee_f: Optional[float] = None
+    Transport_Cost_F : Optional[float] = None
     Taxes_F : Optional[float] = None
     Image_Link : Optional[str] = None
 
