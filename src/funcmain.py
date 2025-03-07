@@ -9,7 +9,7 @@ load_dotenv()
 import requests
 from PIL import Image
 import io
-
+import asyncio
 TEMP_DIR = "/tmp/"
 
 TOKEN_INSTANCE =  TokenManager(
@@ -24,6 +24,15 @@ TOKEN_INSTANCE =  TokenManager(
 buyer_instance = BuyerRecommendation()  
 
 ZOHO_API = ZohoApi(base_url="https://www.zohoapis.ca/crm/v2")
+
+
+
+## temp fix
+async def send_vehicle_to_leads(vehicle_row):
+    loop = asyncio.get_running_loop()
+    loop.run_in_executor(None, requests.post, 
+                         "https://tradegeek-leads.azurewebsites.net/api/leads/add?code=3BA6F_8jxMl5cC7cEP8vhbBxIUPFIXoWaS0239o3u2QRAzFuPa52fQ%3D%3D", 
+                         vehicle_row)
 
 
 async def add_vehicle(body):
@@ -128,6 +137,7 @@ async def add_vehicle(body):
                 "Vin":vehicle.VIN,
                 "source":vehicle.Source
             }
+            asyncio.create_task(send_vehicle_to_leads(vehicle_row))  # Run in background
             return {"details":vehicle_row,"Vehicle ID":vehicle_id,"code":"SUCCESS"}
           
         except Exception as e:
